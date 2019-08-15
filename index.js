@@ -1017,7 +1017,7 @@ const state = {
 // Philippine Pears,
 // Marian Manklow
 
-// In the following exercises you will be asked to return a modified version of state.  DO NOT CHANGE STATE DIRECTLY!!  This is to get practice with manipulating state in React/Redux.  All returns should be a modified copy of state.
+// In the following exercises you will be asked to return a modified version of state.  DO NOT CHANGE STATE DIRECTLY!!  In the end, state remain the same.  This is to get practice with manipulating state in React/Redux.  All returns should be a modified copy of state.
 
 // ***Example***
 // function example() {
@@ -1025,28 +1025,117 @@ const state = {
 // }
 
 // const solution_example = example();
-// console.log(solution_example)
+// console.log("Example", solution_example)
 
 //  *** Sorting the array ***
-//   In the next few exercises, use the .sort() method to return the appropriate new array
+//   In the next few exercises, use the .sort() method to return the appropriate new array.  The problem with sort is that it mutates the array, so we must sort a copy of the array. (i.e. [...the_array_you_want_to_sort])  Look up how .slice() and .concat() can also help create a copy of an array.
 
 //   #1 -- Return a new array that contains items listed from highest ID# to lowest
 //     - CODE HERE -
+function sortByID() {
+  // const temp = { ...state };
+  return {
+    ...state,
+    students: state.students.concat().sort((a, b) => {
+      return b.id - a.id;
+    })
+  };
+}
+
+const solution_01 = sortByID();
+console.log("Problem 01", solution_01);
 
 //   #2 -- Return a new array that contains the items listed by length of last name (shortest to longest)
 //     - CODE HERE -
+function sortByLastNameLength() {
+  return {
+    ...state,
+    students: [...state.students].sort((a, b) => {
+      return a.last_name.length - b.last_name.length;
+    })
+  };
+}
+
+const solution_02 = sortByLastNameLength();
+console.log("Problem 02", solution_02);
 
 //   #3 -- Return a new array that contains the items listed by age (oldest to youngest). Look up Date.parse() for this.
 //     - CODE HERE -
+function sortByAge() {
+  return {
+    ...state,
+    students: [...state.students].sort((a, b) => {
+      return Date.parse(a.birthday) - Date.parse(b.birthday);
+    })
+  };
+}
 
-//   #4 -- Return a new array that contains the items listed in alphabetical order.  This one isn't as straight forward as it appears and will require a solid understanding of how sort works.
+const solution_03 = sortByAge();
+console.log("Problem 03", solution_03);
+
+//   #4 -- Return a new array that contains the items listed in alphabetical order by last name.  This one isn't as straight forward as it appears and will require a solid understanding of how sort works.  HINT:  "A" < "B" returns true.
 //     - CODE HERE -
+function sortAlphabetically() {
+  return {
+    ...state,
+    students: [...state.students].sort((a, b) => {
+      if (a.last_name > b.last_name) return 1;
+      if (a.last_name < b.last_name) return -1;
+    })
+  };
+}
+
+//  Alternate solution
+// function sortAlphabetically() {
+//   return {
+//     ...state,
+//     students: [...state.students].sort((a, b) => {
+//       return a.last_name.localeCompare(b.last_name);
+//     })
+//   };
+// }
+
+const solution_04 = sortAlphabetically();
+console.log("Problem 04", solution_04);
 
 //   #5 -- Return a new array that orders each student's classes by exam date.
 //     - CODE HERE -
+function sortByExamDate() {
+  return {
+    ...state,
+    students: state.students.map(student => {
+      return {
+        ...student,
+        classes: student.classes
+          .concat()
+          .sort((a, b) => Date.parse(a.exam_date) - Date.parse(b.exam_date))
+      };
+    })
+  };
+}
+
+const solution_05 = sortByExamDate();
+console.log("Problem 05:", solution_05);
 
 //   #6 -- Return a new array that contains the items listed from highest average grade to lowest.  This one may require several steps.
 //     - CODE HERE -
+function sortByAverageGrade() {
+  return {
+    ...state,
+    students: [...state.students].sort((a, b) => {
+      const a_total = a.classes
+        .map(el => el.grade)
+        .reduce((acc, cur) => cur + acc);
+      const b_total = b.classes
+        .map(el => el.grade)
+        .reduce((acc, cur) => cur + acc);
+      return b_total / 5 - a_total / 5;
+    })
+  };
+}
+
+const solution_06 = sortByAverageGrade();
+console.log("Problem 06", solution_06);
 
 //  *** Filtering the array ***
 //  In the following exercises, return a new array that has been filter in the appropiate way.
