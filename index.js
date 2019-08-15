@@ -1017,7 +1017,7 @@ const state = {
 // Philippine Pears,
 // Marian Manklow
 
-// In the following exercises you will be asked to return a modified version of state.  DO NOT CHANGE STATE DIRECTLY!!  In the end, state remain the same.  This is to get practice with manipulating state in React/Redux.  All returns should be a modified copy of state.
+// In the following exercises you will be asked to return a modified version of state.  DO NOT CHANGE STATE DIRECTLY!!  In the end, state should remain the same.  This is to get practice with manipulating state in React/Redux.  All returns should be a modified copy of state.
 
 // ***Example***
 // function example() {
@@ -1033,7 +1033,6 @@ const state = {
 //   #1 -- Return a new array that contains items listed from highest ID# to lowest
 //     - CODE HERE -
 function sortByID() {
-  // const temp = { ...state };
   return {
     ...state,
     students: state.students.concat().sort((a, b) => {
@@ -1117,7 +1116,7 @@ function sortByExamDate() {
 const solution_05 = sortByExamDate();
 console.log("Problem 05:", solution_05);
 
-//   #6 -- Return a new array that contains the items listed from highest average grade to lowest.  This one may require several steps.
+//   #6 -- Return a new array that contains the items listed from highest average grade to lowest.  This one may require several steps.  Combination of map() and reduce() can help when calculating the average grade.
 //     - CODE HERE -
 function sortByAverageGrade() {
   return {
@@ -1138,22 +1137,106 @@ const solution_06 = sortByAverageGrade();
 console.log("Problem 06", solution_06);
 
 //  *** Filtering the array ***
-//  In the following exercises, return a new array that has been filter in the appropiate way.
+//  In the following exercises, return a new array that has been filter in the appropiate way.  If you are having issues with your filter, remember to double check that your filter function is actually returning something.
 
-//   #1 -- Return a new array that contains just the first 10 students.  There are several ways of doing this. Try doing it once with .slice() and once with .filter().
+//   #7 -- Return a new array that contains just the first 10 students.  There are several ways of doing this. Try doing it once with .slice() and once with .filter().
 //     - CODE HERE -
+function filterFirstTenBySlice() {
+  return {
+    ...state,
+    students: state.students.slice(0, 10)
+  };
+}
 
-//   #2 -- Return a new array that contains all of the students whose email ends in ".com".  .includes() will be your friend here
-//     - CODE HERE -
+function filterFirstTenByFilter() {
+  return {
+    ...state,
+    students: state.students.filter(student => student.id <= 10)
+  };
+}
 
-//   #3 -- Return a new array of all that student whose last name starts with "S".
-//     - CODE HERE -
+const solution_07 = filterFirstTenBySlice();
+const solution_07_filter = filterFirstTenByFilter();
+console.log("Problem 07:", solution_07, solution_07_filter);
 
-//   #4 -- Return a new array of all of the students who have Ransell Weson as a teacher.  Look up .some() for this one.
+//   #8 -- Return a new array that contains all of the students whose email ends in ".com".  .includes() will be your friend here
 //     - CODE HERE -
+function filterByCom() {
+  return {
+    ...state,
+    students: state.students.filter(({ email }) => email.includes("com"))
+  };
+}
 
-//   #5 -- Return a new array of students who are passing all of their classes with at least a 70.  Look up .every() for this one.
-//     - CODE HERE -
+const solution_08 = filterByCom();
+console.log("Problem 08", solution_08);
 
-//   #6 -- Return a new array of students who have an average grade less than 70 and update their passing status to false.
+//   #9 -- Return a new array of all that student whose last name starts with a letter that's passed into the function.  How can we target the first letter of a string?
 //     - CODE HERE -
+function filterByFirstLetter(letter) {
+  return {
+    ...state,
+    students: state.students.filter(
+      ({ last_name }) => last_name[0] === letter.toUpperCase()
+    )
+  };
+}
+
+const solution_09 = filterByFirstLetter("m");
+console.log("Problem 09", solution_09);
+
+//   #10 -- Return a new array of all of the students who have Morena Giacaponi as a teacher.  Look up .some() for this one.
+//     - CODE HERE -
+function filterByTeacher() {
+  return {
+    ...state,
+    students: state.students.filter(student => {
+      return student.classes.some(el =>
+        el.teacher.includes("Morena Giacaponi")
+      );
+    })
+  };
+}
+
+const solution_10 = filterByTeacher();
+console.log("Problem 10", solution_10);
+
+//   #11 -- Pass in a number to a function and return all students whose grade in all classes is above that number.  Look up .every() for this one.
+//     - CODE HERE -
+function filterByPassingEach(check) {
+  return {
+    ...state,
+    students: state.students.filter(({ classes }) => {
+      return classes.every(({ grade }) => grade > check);
+    })
+  };
+}
+
+const solution_11 = filterByPassingEach(60);
+console.log("Problem 11", solution_11);
+
+// ***Bonus Challenge***
+//   #12 -- Return a new array of all students, but change the passing attribute to false if their average grade is below 70.
+//     - CODE HERE -
+function setFailing() {
+  return {
+    ...state,
+    students: state.students.map(student => {
+      const gradeTotal = student.classes
+        .map(({ grade }) => grade)
+        .reduce((acc, cur) => acc + cur);
+
+      if (gradeTotal / 5 > 70) {
+        return { ...student };
+      } else {
+        return { ...student, passing: false };
+      }
+    })
+  };
+}
+
+const solution_12 = setFailing();
+console.log("Problem 12", solution_12);
+
+//  This state should match the data at the top of the page!
+console.log("This should not have changed", state);
