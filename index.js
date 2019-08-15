@@ -1032,211 +1032,43 @@ const state = {
 
 //   #1 -- Return a new array that contains items listed from highest ID# to lowest
 //     - CODE HERE -
-function sortByID() {
-  return {
-    ...state,
-    students: state.students.concat().sort((a, b) => {
-      return b.id - a.id;
-    })
-  };
-}
-
-const solution_01 = sortByID();
-console.log("Problem 01", solution_01);
 
 //   #2 -- Return a new array that contains the items listed by length of last name (shortest to longest)
 //     - CODE HERE -
-function sortByLastNameLength() {
-  return {
-    ...state,
-    students: [...state.students].sort((a, b) => {
-      return a.last_name.length - b.last_name.length;
-    })
-  };
-}
-
-const solution_02 = sortByLastNameLength();
-console.log("Problem 02", solution_02);
 
 //   #3 -- Return a new array that contains the items listed by age (oldest to youngest). Look up Date.parse() for this.
 //     - CODE HERE -
-function sortByAge() {
-  return {
-    ...state,
-    students: [...state.students].sort((a, b) => {
-      return Date.parse(a.birthday) - Date.parse(b.birthday);
-    })
-  };
-}
-
-const solution_03 = sortByAge();
-console.log("Problem 03", solution_03);
 
 //   #4 -- Return a new array that contains the items listed in alphabetical order by last name.  This one isn't as straight forward as it appears and will require a solid understanding of how sort works.  HINT:  "A" < "B" returns true.
 //     - CODE HERE -
-function sortAlphabetically() {
-  return {
-    ...state,
-    students: [...state.students].sort((a, b) => {
-      if (a.last_name > b.last_name) return 1;
-      if (a.last_name < b.last_name) return -1;
-    })
-  };
-}
-
-//  Alternate solution
-// function sortAlphabetically() {
-//   return {
-//     ...state,
-//     students: [...state.students].sort((a, b) => {
-//       return a.last_name.localeCompare(b.last_name);
-//     })
-//   };
-// }
-
-const solution_04 = sortAlphabetically();
-console.log("Problem 04", solution_04);
 
 //   #5 -- Return a new array that orders each student's classes by exam date.
 //     - CODE HERE -
-function sortByExamDate() {
-  return {
-    ...state,
-    students: state.students.map(student => {
-      return {
-        ...student,
-        classes: student.classes
-          .concat()
-          .sort((a, b) => Date.parse(a.exam_date) - Date.parse(b.exam_date))
-      };
-    })
-  };
-}
-
-const solution_05 = sortByExamDate();
-console.log("Problem 05:", solution_05);
 
 //   #6 -- Return a new array that contains the items listed from highest average grade to lowest.  This one may require several steps.  Combination of map() and reduce() can help when calculating the average grade.
 //     - CODE HERE -
-function sortByAverageGrade() {
-  return {
-    ...state,
-    students: [...state.students].sort((a, b) => {
-      const a_total = a.classes
-        .map(el => el.grade)
-        .reduce((acc, cur) => cur + acc);
-      const b_total = b.classes
-        .map(el => el.grade)
-        .reduce((acc, cur) => cur + acc);
-      return b_total / 5 - a_total / 5;
-    })
-  };
-}
-
-const solution_06 = sortByAverageGrade();
-console.log("Problem 06", solution_06);
 
 //  *** Filtering the array ***
 //  In the following exercises, return a new array that has been filter in the appropiate way.  If you are having issues with your filter, remember to double check that your filter function is actually returning something.
 
 //   #7 -- Return a new array that contains just the first 10 students.  There are several ways of doing this. Try doing it once with .slice() and once with .filter().
 //     - CODE HERE -
-function filterFirstTenBySlice() {
-  return {
-    ...state,
-    students: state.students.slice(0, 10)
-  };
-}
-
-function filterFirstTenByFilter() {
-  return {
-    ...state,
-    students: state.students.filter(student => student.id <= 10)
-  };
-}
-
-const solution_07 = filterFirstTenBySlice();
-const solution_07_filter = filterFirstTenByFilter();
-console.log("Problem 07:", solution_07, solution_07_filter);
 
 //   #8 -- Return a new array that contains all of the students whose email ends in ".com".  .includes() will be your friend here
 //     - CODE HERE -
-function filterByCom() {
-  return {
-    ...state,
-    students: state.students.filter(({ email }) => email.includes("com"))
-  };
-}
-
-const solution_08 = filterByCom();
-console.log("Problem 08", solution_08);
 
 //   #9 -- Return a new array of all that student whose last name starts with a letter that's passed into the function.  How can we target the first letter of a string?
 //     - CODE HERE -
-function filterByFirstLetter(letter) {
-  return {
-    ...state,
-    students: state.students.filter(
-      ({ last_name }) => last_name[0] === letter.toUpperCase()
-    )
-  };
-}
-
-const solution_09 = filterByFirstLetter("m");
-console.log("Problem 09", solution_09);
 
 //   #10 -- Return a new array of all of the students who have Morena Giacaponi as a teacher.  Look up .some() for this one.
 //     - CODE HERE -
-function filterByTeacher() {
-  return {
-    ...state,
-    students: state.students.filter(student => {
-      return student.classes.some(el =>
-        el.teacher.includes("Morena Giacaponi")
-      );
-    })
-  };
-}
-
-const solution_10 = filterByTeacher();
-console.log("Problem 10", solution_10);
 
 //   #11 -- Pass in a number to a function and return all students whose grade in all classes is above that number.  Look up .every() for this one.
 //     - CODE HERE -
-function filterByPassingEach(check) {
-  return {
-    ...state,
-    students: state.students.filter(({ classes }) => {
-      return classes.every(({ grade }) => grade > check);
-    })
-  };
-}
-
-const solution_11 = filterByPassingEach(60);
-console.log("Problem 11", solution_11);
 
 // ***Bonus Challenge***
 //   #12 -- Return a new array of all students, but change the passing attribute to false if their average grade is below 70.
 //     - CODE HERE -
-function setFailing() {
-  return {
-    ...state,
-    students: state.students.map(student => {
-      const gradeTotal = student.classes
-        .map(({ grade }) => grade)
-        .reduce((acc, cur) => acc + cur);
-
-      if (gradeTotal / 5 > 70) {
-        return { ...student };
-      } else {
-        return { ...student, passing: false };
-      }
-    })
-  };
-}
-
-const solution_12 = setFailing();
-console.log("Problem 12", solution_12);
 
 //  This state should match the data at the top of the page!
 console.log("This should not have changed", state);
