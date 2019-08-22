@@ -1005,6 +1005,8 @@ const state = {
   ]
 };
 
+console.log("state test:", state);
+
 // --Teachers --
 // Carver Verni,
 // Gavan Binstead,
@@ -1032,18 +1034,97 @@ const state = {
 
 //   #1 -- Return a new array that contains items listed from highest ID# to lowest
 //     - CODE HERE -
+// If compareFunction is supplied, all non-undefined array elements are sorted according to the return value of the compare function (all undefined elements are sorted to the end of the array, with no call to compareFunction). If a and b are two elements being compared, then:
 
-//   #2 -- Return a new array that contains the items listed by length of last name (shortest to longest)
+// If compareFunction(a, b) is less than 0, sort a to an index lower than b (i.e. a comes first).
+// If compareFunction(a, b) returns 0, leave a and b unchanged with respect to each other, but sorted with respect to all different elements. Note: the ECMAscript standard does not guarantee this behavior, thus, not all browsers (e.g. Mozilla versions dating back to at least 2003) respect this.
+// If compareFunction(a, b) is greater than 0, sort b to an index lower than a (i.e. b comes first).
+// compareFunction(a, b) must always return the same value when given a specific pair of elements a and b as its two arguments. If inconsistent results are returned, then the sort order is undefined.
+// So, the compare function has the following form:
+
+// function compare(a, b) {
+//   if (a is less than b by some ordering criterion) {
+//     return -1;
+//   }
+//   if (a is greater than b by the ordering criterion) {
+//     return 1;
+//   }
+// a must be equal to b
+//   return 0;
+// }
+
+// The spread operator, when used as above, will copy the original array, take all the elements out of the array, and deposit the elements in the new context.
+
+function sortStudentsId() {
+  return {
+    ...state,
+    students: state.students.slice(0, 25).sort(function(a, b) {
+      return b.id - a.id;
+    })
+  };
+}
+
+const questionOne = sortStudentsId();
+console.log("question 1", questionOne);
+
+//   #2 -- Return a new array that contains the items listed by length of last name (shortest to longest) t
 //     - CODE HERE -
+
+function studentLength() {
+  return {
+    ...state,
+    students: state.students.slice(0, 25).sort(function(a, b) {
+      return a.last_name.length - b.last_name.length;
+    })
+  };
+}
+
+const questionTwo = studentLength();
+console.log("question 2:", questionTwo);
 
 //   #3 -- Return a new array that contains the items listed by age (oldest to youngest). Look up Date.parse() for this.
 //     - CODE HERE -
 
+function studentAge() {
+  return {
+    ...state,
+    students: state.students.slice(0, 25).sort(function(a, b) {
+      return new Date(b.birthday) - new Date(a.birthday);
+    })
+  };
+}
+
+const questionThree = studentAge();
+console.log("question 3:", questionThree);
 //   #4 -- Return a new array that contains the items listed in alphabetical order by last name.  This one isn't as straight forward as it appears and will require a solid understanding of how sort works.  HINT:  "A" < "B" returns true.
 //     - CODE HERE -
+function studentAlpha() {
+  return {
+    ...state,
+    students: state.students.slice(0, 25).sort(function(a, b) {
+      if (a.last_name.toLowerCase() < b.last_name.toLowerCase()) return -1;
+      if (a.last_name.toLowerCase() > b.last_name.toLowerCase()) return 1;
+      // return 0;
+    })
+  };
+}
+
+const questionFour = studentAlpha();
+console.log("question 4:", questionFour);
 
 //   #5 -- Return a new array that orders each student's classes by exam date.
 //     - CODE HERE -
+function studentExam() {
+  return {
+    ...state,
+    students: state.students.map(item => {
+      return item;
+    })
+  };
+}
+
+const questionFive = studentExam();
+console.log("question 5:", questionFive);
 
 //   #6 -- Return a new array that contains the items listed from highest average grade to lowest.  This one may require several steps.  Combination of map() and reduce() can help when calculating the average grade.
 //     - CODE HERE -
@@ -1054,8 +1135,39 @@ const state = {
 //   #7 -- Return a new array that contains just the first 10 students.  There are several ways of doing this. Try doing it once with .slice() and once with .filter().
 //     - CODE HERE -
 
+function sortStudentsTen() {
+  return {
+    ...state,
+    students: state.students.slice(0, 10)
+  };
+}
+
+const questionSeven = sortStudentsTen();
+console.log("question 7", questionSeven);
+
+function sortStudentsFilter() {
+  return {
+    ...state,
+    students: state.students.slice(0, 25).filter(function(e) {
+      return e.id < 11;
+    })
+  };
+}
+
+const questionSevenpointfive = sortStudentsFilter();
+console.log("qustion 7.5", questionSevenpointfive);
 //   #8 -- Return a new array that contains all of the students whose email ends in ".com".  .includes() will be your friend here
 //     - CODE HERE -
+
+function sortStudentsEmail() {
+  return {
+    ...state,
+    students: state.students.filter(email => email.includes(".com"))
+  };
+}
+
+const questionEight = sortStudentsEmail();
+console.log("question 8", questionEight);
 
 //   #9 -- Return a new array of all that student whose last name starts with a letter that's passed into the function.  How can we target the first letter of a string?
 //     - CODE HERE -
